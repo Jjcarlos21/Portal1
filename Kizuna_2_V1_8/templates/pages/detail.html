@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Kizuna Venezuela - {{ page.title }}{% endblock %}
+{% block content %}
+<main class="mx-auto w-full max-w-7xl px-5 sm:px-6 py-8">
+    <section class="mb-8 rounded-2xl bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border border-slate-300 dark:border-slate-800 p-6 lg:p-8 shadow-lg">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div>
+                <h2 class="text-3xl lg:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">{{ page.title }}</h2>
+                <p class="mt-3 text-slate-700 dark:text-slate-300">Directorio en construcción</p>
+                <p class="mt-2 max-w-4xl text-sm lg:text-base leading-relaxed text-slate-600 dark:text-slate-300">
+                    Si diriges una escuela, dojo, asociación dedicada a la práctica de actividades relacionadas con la cultura japonesa, o dictas clases particulares, te invitamos a inscribirte en el directorio.
+                </p>
+            </div>
+            <button type="button" data-open-inscription class="shrink-0 rounded-lg bg-primary px-6 py-3 text-sm font-extrabold text-white shadow-md hover:brightness-95">Inscribirme</button>
+        </div>
+    </section>
+
+    <section id="directorio">
+        {% if not caracas and not states %}
+        <div class="p-8 text-center text-slate-700 dark:text-slate-300 border border-slate-300/40 dark:border-slate-800 rounded-xl my-8 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm">
+            <p class="text-lg">{{ page.empty_message }}</p>
+        </div>
+        {% endif %}
+
+        {% if caracas %}
+        <div class="mt-6 mb-5 border-b-2 border-primary/40 pb-2">
+            <h3 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-3xl">pin_drop</span> Caracas
+            </h3>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
+            {% for item in caracas %}{% include "components/directory_card.html" %}{% endfor %}
+        </div>
+        {% endif %}
+
+        {% for state, items in states.items() %}
+        <div class="mt-12 mb-5 border-b-2 border-primary/40 pb-2">
+            <h3 class="text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-3xl">map</span> Estado {{ state }}
+            </h3>
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 mb-10">
+            {% for item in items %}{% include "components/directory_card.html" %}{% endfor %}
+        </div>
+        {% endfor %}
+    </section>
+</main>
+
+<div id="inscription-modal" class="hidden fixed inset-0 z-[100] inscription-backdrop p-4 overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center">
+        <section class="w-full max-w-2xl rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200 dark:border-slate-700 p-6 lg:p-8">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white">Inscribirme en el directorio</h3>
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Completa la información. Serás contactado una vez verificada la información suministrada.</p>
+                </div>
+                <button type="button" data-close-inscription class="text-2xl text-slate-500 hover:text-slate-900 dark:hover:text-white" aria-label="Cerrar">×</button>
+            </div>
+            <form id="inscription-form" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label class="text-sm font-semibold">Nombre y apellido<input required name="nombre" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <label class="text-sm font-semibold">Nombre de la organización<input required name="organizacion" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <label class="text-sm font-semibold md:col-span-2">Dirección<textarea required name="direccion" rows="2" class="mt-1 w-full rounded-lg border-slate-300"></textarea></label>
+                <label class="text-sm font-semibold">Teléfono<input required name="telefono" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <label class="text-sm font-semibold">Email<input required type="email" name="email" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <label class="text-sm font-semibold md:col-span-2">Especialidades<input name="especialidades" placeholder="Idioma Japonés, Cultura, Karate, ..." class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <label class="text-sm font-semibold md:col-span-2">Redes sociales<textarea name="redes" rows="2" class="mt-1 w-full rounded-lg border-slate-300"></textarea></label>
+                <label class="text-sm font-semibold md:col-span-2">Sitio web<input name="web" class="mt-1 w-full rounded-lg border-slate-300" /></label>
+                <div class="md:col-span-2 flex justify-end gap-3 pt-2">
+                    <button type="button" data-close-inscription class="rounded-lg border border-slate-300 px-5 py-2 font-bold">Cancelar</button>
+                    <button type="submit" class="rounded-lg bg-primary px-5 py-2 font-bold text-white">Enviar solicitud</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock %}

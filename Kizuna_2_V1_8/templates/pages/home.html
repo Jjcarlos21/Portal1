@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Kizuna Venezuela - Directorios{% endblock %}
+{% block content %}
+<main class="mx-auto w-full max-w-7xl px-5 sm:px-6 py-10">
+    <section class="rounded-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-800 p-8 shadow-lg">
+        <h2 class="text-4xl font-black">Kizuna Venezuela — Directorios</h2>
+        <p class="mt-4 text-slate-700 dark:text-slate-300 max-w-3xl">Selecciona un directorio para consultar las organizaciones registradas.</p>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <a class="rounded-xl border p-5 hover:border-primary bg-white/80" href="{{ url_for('culture_detail', slug='idioma-japones') }}"><strong>Idioma Japonés</strong><span class="block text-sm mt-2 text-slate-500">/cultura/idioma-japones</span></a>
+            <a class="rounded-xl border p-5 hover:border-primary bg-white/80" href="{{ url_for('culture_detail', slug='aikido') }}"><strong>Aikido</strong><span class="block text-sm mt-2 text-slate-500">/cultura/aikido</span></a>
+            <a class="rounded-xl border p-5 hover:border-primary bg-white/80" href="{{ url_for('culture_detail', slug='judo') }}"><strong>Judo</strong><span class="block text-sm mt-2 text-slate-500">/cultura/judo</span></a>
+            <a class="rounded-xl border p-5 hover:border-primary bg-white/80" href="{{ url_for('culture_detail', slug='karate') }}"><strong>Karate Do</strong><span class="block text-sm mt-2 text-slate-500">/cultura/karate</span></a>
+            <a class="rounded-xl border p-5 hover:border-primary bg-white/80" href="{{ url_for('culture_detail', slug='bonsai') }}"><strong>Bonsai</strong><span class="block text-sm mt-2 text-slate-500">/cultura/bonsai</span></a>
+        </div>
+    </section>
+</main>
+{% endblock %}

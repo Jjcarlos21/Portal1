@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {"primary": "#f43625"},
+                    fontFamily: {"display": ["Manrope", "sans-serif"]},
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        html, body { min-height: 100vh; margin: 0; padding: 0; }
+        body {
+            background-image: url('{{ url_for("static", filename="img/fondo_pagina.png") }}');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            background-attachment: fixed;
+            background-color: transparent;
+        }
+        .directory-card {
+            height: 296px;
+            min-height: 296px;
+            display:flex;
+            flex-direction:column;
+            box-sizing:border-box;
+        }
+        .directory-layout {
+            display:grid;
+            grid-template-columns:68px minmax(0,1fr) 172px;
+            grid-template-rows:56px 172px;
+            column-gap:10px;
+            flex:0 0 228px;
+            min-height:228px;
+            align-items:start;
+        }
+        .directory-logo-zone { grid-column:1; grid-row:1 / span 2; padding-left:0; }
+        .directory-logo { width:48px; height:48px; border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; }
+        .directory-logo img { max-width:100%; max-height:100%; object-fit:contain; }
+        .directory-zone { margin-top:12px; display:flex; align-items:flex-start; gap:3px; font-size:11px; line-height:1.25; font-weight:700; color:#475569; }
+        .directory-zone .material-symbols-outlined { color:#f43625; font-size:15px; flex:0 0 auto; }
+        .directory-name { grid-column:2 / 4; grid-row:1; min-width:0; padding-right:3px; max-height:56px; overflow:hidden; }
+        .directory-name h5 { margin:0; font-size:18px; line-height:1.15; font-weight:800; color:#0f172a; overflow-wrap:anywhere; }
+        .directory-photo-slot { grid-column:3; grid-row:2; min-height:172px; height:172px; width:100%; }
+        .directory-photo-slot.is-empty { visibility:hidden; }
+        .directory-photo { position:relative; width:100%; height:172px; min-height:172px; border-radius:8px; overflow:hidden; border:1px solid #e2e8f0; background:#f1f5f9; }
+        .directory-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+        .photo-counter { position:absolute; bottom:6px; right:7px; border-radius:9999px; background:rgba(15,23,42,.78); padding:2px 7px; font-size:10px; font-weight:800; color:#fff; }
+        .photo-nav { background:rgba(15,23,42,.70); color:white; border-radius:9999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; }
+        .photo-nav:hover { background:rgba(15,23,42,.9); }
+        .directory-contact { grid-column:1 / 3; grid-row:2; min-width:0; padding-top:48px; padding-right:4px; }
+        .directory-address { position:relative; margin-bottom:24px; }
+        .address-trigger { display:flex; align-items:center; gap:4px; color:#f43625; font-size:14px; font-weight:800; background:none; border:0; padding:0; cursor:default; }
+        .address-trigger .material-symbols-outlined { font-size:17px; }
+        .address-popover { visibility:hidden; opacity:0; transform:translateY(4px); transition:.15s ease; position:absolute; left:0; bottom:calc(100% + 8px); z-index:40; width:250px; border-radius:7px; background:#0f172a; padding:9px 11px; font-size:11px; line-height:1.35; color:#fff; box-shadow:0 10px 25px rgba(0,0,0,.2); pointer-events:none; }
+        .address-trigger:hover + .address-popover, .address-popover:hover { visibility:visible; opacity:1; transform:translateY(0); }
+        .directory-phone { display:flex; align-items:flex-start; gap:8px; color:#475569; font-size:12px; line-height:1.35; }
+        .directory-phone .material-symbols-outlined { font-size:23px; }
+        .directory-phone div { display:flex; flex-direction:column; }
+        .phone-label { font-weight:800; color:#334155; }
+        .directory-socials { flex:0 0 44px; display:flex; align-items:center; justify-content:center; }
+        .brand-icon { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border-radius:9999px; transition:.18s ease; }
+        .brand-icon.is-active { color:#f43625; opacity:1; }
+        .brand-icon.is-disabled { color:#64748b; opacity:1; cursor:default; }
+        .brand-icon.is-active:hover { transform:translateY(-1px) scale(1.06); }
+        .brand-icon svg { width:20px; height:20px; fill:currentColor; }
+        .inscription-backdrop { background:rgba(2,6,23,.68); }
+        @media (max-width: 640px) {
+            .directory-card { height: 252px; min-height:252px; }
+            .directory-layout { grid-template-columns:58px minmax(0,1fr) 132px; grid-template-rows:52px 132px; flex-basis:184px; min-height:184px; }
+            .directory-logo { width:44px; height:44px; }
+            .directory-name h5 { font-size:16px; }
+            .directory-photo-slot, .directory-photo { min-height:132px; height:132px; }
+            .directory-zone { font-size:10px; margin-top:10px; }
+            .directory-contact { padding-top:4px; }
+        }
+        @media (max-width: 430px) {
+            .directory-card { height: 236px; min-height:236px; }
+            .directory-layout { grid-template-columns:54px minmax(0,1fr) 118px; grid-template-rows:50px 118px; flex-basis:168px; min-height:168px; }
+            .directory-photo-slot, .directory-photo { min-height:118px; height:118px; }
+        }
+    </style>
+    <title>{% block title %}Kizuna Venezuela{% endblock %}</title>
+</head>
+<body class="font-display text-slate-900 dark:text-slate-100 transition-colors duration-300 relative min-h-screen">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <header class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md text-white shadow-lg border-b border-primary/20">
+        <div class="w-full px-6 lg:px-20 py-3 flex items-center justify-between">
+            <h1 class="text-lg font-extrabold tracking-tight">Kizuna Venezuela</h1>
+            <nav class="flex items-center gap-6">
+                <a class="text-sm font-semibold hover:text-primary transition-colors" href="{{ url_for('index') }}">Inicio</a>
+                <a class="text-sm font-semibold hover:text-primary transition-colors" href="javascript:history.back()">Volver</a>
+            </nav>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="bg-slate-950/90 backdrop-blur-md text-white py-4 text-center border-t border-slate-800 mt-auto">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-xs">
+            <div>
+                <span class="font-black text-sm">Kizuna Venezuela</span>
+                <span class="text-slate-400 ml-2 hidden sm:inline">| Difusión y preservación de la cultura japonesa en Venezuela.</span>
+            </div>
+            <div class="text-slate-500">© 2026 Kizuna Venezuela. Todos los derechos reservados.</div>
+        </div>
+    </footer>
+</div>
+<script src="{{ url_for('static', filename='js/directory.js') }}"></script>
+</body>
+</html>
